@@ -33,7 +33,7 @@ Two additional configuration variables are available (defaults shown below).
 }
 ```
 
-# lunr
+## lunr
 
 This is a drop in replacement for the [lunr](https://github.com/GitbookIO/plugin-lunr) default plugin, all of the original functionality is still present.
 
