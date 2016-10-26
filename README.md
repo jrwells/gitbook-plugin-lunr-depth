@@ -1,6 +1,6 @@
 # lunr-depth
 
-This plugin provides a backend for the [search](https://github.com/GitbookIO/plugin-search) plugin.
+This plugin provides a backend for the [contextual-search](https://github.com/jrwells/gitbook-plugin-contextual-search) plugin.
 
 This plugin replaces the default [lunr](https://github.com/GitbookIO/plugin-lunr) plugin, providing a number of additonal depth information. Created for the [contextual-search](https://github.com/jrwells/gitbook-plugin-contextual-search) plugin.
 
