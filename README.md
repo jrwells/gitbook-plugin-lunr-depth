@@ -64,7 +64,7 @@ search:
 
 ---
 
-# My Page
+## My Page
 
 This page will rank better if we search for 'keyword1'.
 ```
@@ -78,7 +78,7 @@ You can disable the indexing of a specific page by adding a YAML header to the p
 search: false
 ---
 
-# My Page
+## My Page
 
 This page is not indexed in Lunr.
 ```
