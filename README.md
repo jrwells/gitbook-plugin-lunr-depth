@@ -1,18 +1,41 @@
-# lunr
+# lunr-depth
 
 This plugin provides a backend for the [search](https://github.com/GitbookIO/plugin-search) plugin.
 
-This plugin is a default plugin.
+This plugin replaces the default [lunr](https://github.com/GitbookIO/plugin-lunr) plugin, providing a number of additonal depth information. Created for the [contextual-search](https://github.com/jrwells/gitbook-plugin-contextual-search) plugin.
 
-### Disable this plugin
+### Usuage
 
-This is a default plugin and it can be disabled using a `book.json` configuration:
+The default [lunr](https://github.com/GitbookIO/plugin-lunr) must be disabled using a `book.json` configuration and this plugin must be added:
 
 ```js
 {
-    "plugins": ["-lunr"]
+    "plugins": ["-lunr", "lunr-depth"]
 }
 ```
+
+### Additional configuration
+
+Two additional configuration variables are available (defaults shown below).
+
+`others` defines the name for the universal depth (similar to the `title` of the book).
+
+`floor` defines at what that universal depth is.
+
+```js
+{
+    "pluginsConfig": {
+        "lunr-depth": {
+            "others": "others",
+            "floor": "1"
+        }
+    }
+}
+```
+
+# lunr
+
+This is a drop in replacement for the [lunr](https://github.com/GitbookIO/plugin-lunr) default plugin, all of the original functionality is still present.
 
 ### Limitations
 
@@ -23,7 +46,7 @@ You can change this limit by settings the configuration `maxIndexSize`:
 ```js
 {
     "pluginsConfig": {
-        "lunr": {
+        "lunr-depth": {
             "maxIndexSize": 200000
         }
     }
@@ -68,7 +91,7 @@ By default, special characters will be taken into account, to allow special sear
 ```js
 {
     "pluginsConfig": {
-        "lunr": {
+        "lunr-depth": {
             "ignoreSpecialCharacters": true
         }
     }

@@ -19,6 +19,7 @@ require([
             // eslint-disable-next-line no-undef
             that.index = lunr.Index.load(data.index);
             that.store = data.store;
+            that.levels = data.levels;
             d.resolve();
         });
 
@@ -36,6 +37,8 @@ require([
 
                 return {
                     title: doc.title,
+                    level: doc.level,
+                    depth: doc.depth,
                     url: doc.url,
                     body: doc.summary || doc.body
                 };
@@ -45,7 +48,8 @@ require([
         return $.Deferred().resolve({
             query: q,
             results: results.slice(0, length),
-            count: results.length
+            count: results.length,
+            levels: that.levels
         }).promise();
     };
 

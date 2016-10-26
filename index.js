@@ -8,7 +8,7 @@ var searchIndex;
 function getSearchIndex(context) {
     if (!searchIndex) {
         // Create search index
-        var ignoreSpecialCharacters = context.config.get('pluginsConfig.lunr.ignoreSpecialCharacters') || context.config.get('lunr.ignoreSpecialCharacters');
+        var ignoreSpecialCharacters = context.config.get('pluginsConfig.lunr-depth.ignoreSpecialCharacters') || context.config.get('lunr-depth.ignoreSpecialCharacters');
         searchIndex = lunr(function () {
             this.ref('url');
 
@@ -27,6 +27,9 @@ function getSearchIndex(context) {
 
 // Map of Lunr ref to document
 var documentsStore = {};
+
+// Map of levels to titles
+var levelToTitle = {};
 
 var searchIndexEnabled = true;
 var indexSize = 0;
@@ -47,7 +50,7 @@ module.exports = {
             }
 
             var text, maxIndexSize;
-            maxIndexSize = this.config.get('pluginsConfig.lunr.maxIndexSize') || this.config.get('lunr.maxIndexSize');
+            maxIndexSize = this.config.get('pluginsConfig.lunr-depth.maxIndexSize') || this.config.get('lunr-depth.maxIndexSize');
 
             this.log.debug.ln('index page', page.path);
 
@@ -55,7 +58,7 @@ module.exports = {
             // Decode HTML
             text = Html.decode(text);
             // Strip HTML tags
-            text = text.replace(/(<([^>]+)>)/ig, '');
+            text = text.replace(/(<([^>]+)>)/ig, ' ');
 
             indexSize = indexSize + text.length;
             if (indexSize > maxIndexSize) {
@@ -69,13 +72,18 @@ module.exports = {
                 keywords = page.search.keywords || [];
             }
 
+            // Map a page's level to its title
+            levelToTitle[page.level] = page.title;
+
             // Add to index
             var doc = {
                 url: this.output.toURL(page.path),
                 title: page.title,
+                level: page.level,
+                depth: page.depth,
                 summary: page.description,
                 keywords: keywords.join(' '),
-                body: text
+                body: text.trim()
             };
 
             documentsStore[doc.url] = doc;
@@ -88,10 +96,19 @@ module.exports = {
         'finish': function() {
             if (this.output.name != 'website') return;
 
+            // This will be used for the lowest depth title, default to 'Other'
+            var other = this.config.get('pluginsConfig.lunr-depth.others') || 
+                        this.config.get('title') || 'Other';
+            // Lowest depth, default to 1
+            var floor = this.config.get('pluginsConfig.lunr-depth.floor') ||
+                        '1';
+            levelToTitle[floor] = other;
+
             this.log.debug.ln('write search index');
             return this.output.writeFile('search_index.json', JSON.stringify({
                 index: getSearchIndex(this),
-                store: documentsStore
+                store: documentsStore,
+                levels: levelToTitle
             }));
         }
     }
