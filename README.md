@@ -26,7 +26,7 @@ Two additional configuration variables are available (defaults shown below).
 {
     "pluginsConfig": {
         "lunr-depth": {
-            "others": "others",
+            "others": "Others",
             "floor": "1"
         }
     }
